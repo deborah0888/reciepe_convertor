@@ -1,0 +1,31 @@
+FROM openjdk:17
+COPY project_name.jar /app/app.jar
+CMD ["java","-jar","/app/app.jar"]
+
+From tomcat:9.0
+COPY target/projectname.war usr/local/tomcat/webapps/project_name.war
+CMD ["catlina.sh","run"]
+
+FROM tomcat:9.0
+
+# Remove default webapps
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copy your WAR into Tomcat webapps
+COPY target/SAH.war /usr/local/tomcat/webapps/SAH.war
+
+# Expose Tomcat port
+EXPOSE 8080
+
+# Start Tomcat
+CMD ["catalina.sh", "run"]
+
+FROM openjdk:17
+
+WORKDIR /app
+
+COPY target/MyJavaProject-0.0.1-SNAPSHOT.jar /app/app.jar
+
+CMD ["java", "-jar", "/app/app.jar"]
+
+
